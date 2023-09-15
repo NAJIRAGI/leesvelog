@@ -2,6 +2,8 @@ FROM python:3.11.5
 
 WORKDIR /home/
 
+RUN echo "233"
+
 RUN git clone https://github.com/NAJIRAGI/leesvelog.git
 
 WORKDIR /home/leesvelog/
@@ -10,10 +12,8 @@ RUN pip install -r requirements.txt
 
 RUN pip install gunicorn
 
-RUN echo "SECRET_KEY=django-insecure-h)jabe8h@&$e+_brxeo2n_u8ly7-1$4ge(r8n(yk^zko531hxe" > .env
-
-RUN python manage.py migrate
+RUN pip install mysqlclient
 
 EXPOSE 8000
 
-CMD ["gunicorn", "pragmatic.wsgi", "--bind", "0.0.0.0:8000"]
+CMD ["bash","-c","python manage.py collectstatic --noinput --settings=pragmatic.settings.deploy && python manage.py migrate --settings=pragmatic.settings.deploy && gunicorn pragmatic.wsgi --env DJANGO_SETTINGS_MODULE=pragmatic.settings.deploy --bind 0.0.0.0:8000"]
