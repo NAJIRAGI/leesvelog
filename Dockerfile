@@ -6,15 +6,13 @@ RUN git clone https://github.com/NAJIRAGI/leesvelog.git
 
 WORKDIR /home/leesvelog/
 
-RUN pip install -r requriements.txt
+RUN pip install -r requirements.txt
 
 RUN pip install gunicorn
 
 RUN echo "SECRET_KEY=django-insecure-h)jabe8h@&$e+_brxeo2n_u8ly7-1$4ge(r8n(yk^zko531hxe" > .env
 
 RUN python manage.py migrate
-
-RUN python manage.py collectstatic
 
 EXPOSE 8000
 
